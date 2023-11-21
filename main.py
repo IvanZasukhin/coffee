@@ -14,6 +14,8 @@ if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
 class MyProgram(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.cur = None
+        self.con = None
         uic.loadUi('main.ui', self)  # from ui file
         # self.setupUi(self) # from py file (need to import class from generated .py file)
         self.initUI()
@@ -21,13 +23,15 @@ class MyProgram(QMainWindow):
     def initUI(self):
         self.con = sqlite3.connect("coffee.sqlite")
         self.cur = self.con.cursor()
-        self.pushButton.clicked.connect(self.click_pushButton)
+        self.pushButton.clicked.connect(self.update_tables)
+        self.update_tables()
 
-    def click_pushButton(self):
+    def update_tables(self):
         data = self.cur.execute("Select * from id_coffee", ).fetchall()
         try:
             self.tableWidget.setColumnCount(len(data[0]))
-            self.tableWidget.setHorizontalHeaderLabels(["ID", "название сорта", "степень обжарки", 'молотый/в зернах',
+            self.tableWidget.setHorizontalHeaderLabels(["ID", "название сорта", "степень обжарки",
+                                                        'молотый/не молотый(в зернах)',
                                                         'описание вкуса', 'цена', 'объем упаковки'])
         except IndexError:
             self.tableWidget.setColumnCount(7)

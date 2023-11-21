@@ -21,7 +21,7 @@
     <item>
      <widget class="QPushButton" name="pushButton">
       <property name="text">
-       <string>Обновить</string>
+       <string>Обновить таблицу</string>
       </property>
      </widget>
     </item>
